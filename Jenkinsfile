@@ -1,10 +1,16 @@
-Jenkinsfile (Declarative Pipeline)
+#! /usr/bin/env groovy
+
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3.8'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
     stages {
-        stage('build') {
+        stage('Build') {
             steps {
-                sh 'echo "Hello World"'
+                sh 'mvn -B -DskipTests clean package -Denforcer.fail=false'
             }
         }
     }
